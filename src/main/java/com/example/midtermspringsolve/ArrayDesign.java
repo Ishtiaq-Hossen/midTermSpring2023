@@ -8,29 +8,35 @@ import java.util.ArrayList;
 
 public class ArrayDesign
 {
-    @javafx.fxml.FXML
+    @FXML
     private RadioButton arr3fxid;
-    @javafx.fxml.FXML
+    @FXML
     private TextArea showTextAreaFxid;
-    @javafx.fxml.FXML
+    @FXML
     private RadioButton forwardRadioButtonFxid;
-    @javafx.fxml.FXML
+    @FXML
     private ComboBox<String> oddEvenFxid;
-    @javafx.fxml.FXML
+    @FXML
     private RadioButton backwardRadioButtonFxid;
-    @javafx.fxml.FXML
+    @FXML
     private RadioButton arr1Fxid;
-    @javafx.fxml.FXML
+    @FXML
     private Label showOddEvenLabelFxid;
-    @javafx.fxml.FXML
+    @FXML
     private TextField valListAddTextFieldfxid;
-    @javafx.fxml.FXML
+    @FXML
     private RadioButton arr2Fxid;
     ArrayList<String> oddEvenSelector;
     ToggleGroup tg1=new ToggleGroup();
     ToggleGroup tg2=new ToggleGroup();
-    @javafx.fxml.FXML
+    ArrayList<Integer> valList;//declare korlam
+    ArrayModel arrayModel;
+    ArrayList<Integer>a1;
+    ArrayList<Integer>a2;
+    @FXML
     public void initialize() {
+
+        valList=new ArrayList<>();
         oddEvenSelector=new ArrayList<String>();
         oddEvenSelector.add("Even");
         oddEvenSelector.add("Odd");
@@ -43,24 +49,124 @@ public class ArrayDesign
         backwardRadioButtonFxid.setToggleGroup(tg1);
 
     }
+    public void forwardEvenShow(ArrayList<Integer>a,boolean even){
+        String text = "";
+        if(even){
+                for(int i=0;i<a.size();i++){
+                    if(a.get(i)%2==0){
+                        text+=a.get(i).toString()+',';
+                    }
 
-    @javafx.fxml.FXML
+                }
+                showOddEvenLabelFxid.setText(text);
+            }
+        else{
+            for(int i=0;i<a.size();i++){
+                if(a.get(i)%2!=0){
+                    text+=a.get(i).toString()+',';
+                }
+
+            }
+            showOddEvenLabelFxid.setText(text);
+        }
+
+    }
+    public void backwardEvenShow(ArrayList<Integer>a,boolean even){
+        String text = "";
+        if(even){
+            for(int i=a.size()-1;i>=0;i--){
+                if(a.get(i)%2==0){
+                    text+=a.get(i).toString()+',';
+                }
+
+            }
+            showOddEvenLabelFxid.setText(text);
+        }
+        else{
+            for(int i=a.size()-1;i>=0;i--){
+                if(a.get(i)%2!=0){
+                    text+=a.get(i).toString()+',';
+                }
+
+            }
+            showOddEvenLabelFxid.setText(text);
+        }
+
+    }
+
+
+    @FXML
     public void traverseButtonOnAction(ActionEvent actionEvent) {
+        if(forwardRadioButtonFxid.isSelected()) {
+            boolean even;
+            if("Even".equals(oddEvenFxid.getValue())){
+                even=true;
+            }
+            else{
+                even=false;
+            }
+            if(arr1Fxid.isSelected()) {
+                forwardEvenShow(arrayModel.arr1,even);
+            }
+            else if(arr2Fxid.isSelected()){
+                forwardEvenShow(arrayModel.arr2,even);
+            }
+            else{
+                forwardEvenShow(arrayModel.arr3,even);
+            }
+
+        }
+        else{
+            boolean even;
+            if("Even".equals(oddEvenFxid.getValue())){
+                even=true;
+            }
+            else{
+                even=false;
+            }
+            if(arr1Fxid.isSelected()) {
+                backwardEvenShow(arrayModel.arr1,even);
+            }
+            else if(arr2Fxid.isSelected()){
+                backwardEvenShow(arrayModel.arr2,even);
+            }
+            else{
+                backwardEvenShow(arrayModel.arr3,even);
+            }
+
+        }
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void addElementToValListOnAction(ActionEvent actionEvent) {
+
+        int a=Integer.parseInt(valListAddTextFieldfxid.getText());
+        valList.add(a);
+        valListAddTextFieldfxid.clear();
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void mergeArrayOnAction(ActionEvent actionEvent) {
+        arrayModel=new ArrayModel(a1,a2);
+        arrayModel.arrayMerge();
+        showTextAreaFxid.setText(arrayModel.toString());
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void createA1OnAction(ActionEvent actionEvent) {
+        a1=new ArrayList<>();
+        for(int i=0; i<valList.size(); i++){
+            a1.add(valList.get(i));
+        }
+        valList.clear();
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void createarr2OnAction(ActionEvent actionEvent) {
+        a2=new ArrayList<>();
+        for(int i=0; i<valList.size(); i++){
+            a2.add(valList.get(i));
+        }
+        valList.clear();
     }
 }
